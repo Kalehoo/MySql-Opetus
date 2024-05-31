@@ -624,3 +624,41 @@ SELECT
 FROM Hevoset
 GROUP BY Omistajan_nimi, Omistajan_postitoimipaikka, Nimi
 ORDER BY Omistajan_postitoimipaikka DESC;
+
+-- Tehtävä 9
+--Poimi taulusta Hevoset hevosen nimi, omistajan nimi ja hevosen syntymäaika 
+--ostohinnan mukaan laskevaan suuruusjärjestykseen. Kokeile muuttaa samalla päiväys muotoon päivä kuukausi vuosi
+
+-- AJAN FORMATOINTI
+
+-- %Y: 4-numeroinen vuosi.
+-- %y: 2-numeroinen vuosi.
+-- %m: Kuukausi (01-12).
+-- %d: Kuukauden päivä (01-31).
+-- %H: 24h tuntiformaatti (00-23).
+-- %h: 12h tuntiformaatti (01-12).
+-- %i: Minuutit (00-59).
+-- %s: Sekunnit (00-59).
+-- %p: AM tai PM (12-tuntisessa).
+
+
+-- QUERY 
+SELECT
+    Nimi,
+    Omistajan_nimi,
+    DATE_FORMAT(Syntynyt, '%d.%m.%Y') AS Syntynyt,
+    Ostohinta
+FROM Hevoset
+GROUP BY Nimi, Omistajan_nimi, Syntynyt, Ostohinta
+ORDER BY Ostohinta DESC;
+
+-- TULOS
++--------------+-----------------+------------+-----------+
+| Nimi         | Omistajan_nimi  | Syntynyt   | Ostohinta |
++--------------+-----------------+------------+-----------+
+| SPEEDY TEXAS | Pekka Korpinen  | 09.03.1997 |   5000.00 |
+| EXCELLENT    | Marjut Nieminen | 16.04.1999 |   2300.00 |
+| RULE THE     | Mark Miettinen  | 02.05.2000 |   1300.00 |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | 03.03.1997 |   1200.00 |
+| DIKKO        | Jouko Heimala   | 05.12.2000 |   1200.00 |
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 21.12.1995 |    500.00 |
