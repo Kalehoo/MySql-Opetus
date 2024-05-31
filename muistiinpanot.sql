@@ -593,3 +593,34 @@ FROM Hevoset;
 | Marjut Nieminen | Korpilahti | EXCELLENT    |
 +-----------------+------------+--------------+
 
+-- TEHTÄVÄ 7 
+-- The SELECT DISTINCT statement is used to return only distinct (different) values.
+-- Erittelevä haku, eli SELECT DISTINCT lauseketta käytetään palauttaakseen ainoastaan eriävät arvot
+-- Taas AGGREGATE:lla voidaan määrittää näkyvyydet vain kertaalleen
+-- Aggregate function
+
+SELECT
+    MAX(Omistajan_nimi) AS Omistaja,
+    Omistajan_postitoimipaikka AS Kunta,
+    MAX(Nimi) AS Nimi
+FROM Hevoset
+GROUP BY Omistajan_postitoimipaikka;
+
+-- TEHTÄVÄ 8
+-- ORDER BY FUNKTIO
+
+-- RAKENENE
+-- SELECT
+-- data_mita_selektoidaan1,
+-- data_mita_selektoidaan2
+-- FROM taulukko
+-- GROUP BY data_mita_selektoidaan1, *.*2 jne (groupataan data)
+-- ORDER BY data_minka_mukaan_jarjestys DESC(tai ASC)
+
+SELECT
+    Omistajan_nimi,
+    Omistajan_postitoimipaikka,
+    Nimi
+FROM Hevoset
+GROUP BY Omistajan_nimi, Omistajan_postitoimipaikka, Nimi
+ORDER BY Omistajan_postitoimipaikka DESC;
