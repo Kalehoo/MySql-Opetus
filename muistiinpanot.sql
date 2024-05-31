@@ -531,7 +531,44 @@ SELECT TRIGGER_NAME, EVENT_MANIPULATION, EVENT_OBJECT_TABLE, ACTION_STATEMENT, A
 FROM information_schema.TRIGGERS
 WHERE EVENT_OBJECT_TABLE = 'hevoset' AND TRIGGER_SCHEMA = 'ravitietokanta';
 
+-- KILPAILUT TAULU
 
+Hevonen INT NOT NULL PRIMARY KEY
+Ravirata INT NOT NULL
+Kilpailupvm DATE,
+Tulos INT,
+Voittosumma DECIMAL(50, 2)
+
+CREATE TABLE Kilpailut (
+    Hevonen INT NOT NULL,
+    Ravirata INT NOT NULL,
+    Kilpailupvm DATE,
+    Tulos INT,
+    Voittosumma DECIMAL(50, 2)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
+
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('34', '2', '2005-11-06', '6', '0.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('34', '4', '2005-08-01', '5', '0.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('87', '4', '2005-08-01', '5', '0.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('145', '1', '2005-09-12', '1', '300.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('165', '1', '2005-09-12', '2', '150.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('235', '1', '2005-08-01', '6', '0.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('34', '3', '2005-10-10', '1', '1000.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('87', '3', '2005-10-10', '4', '0.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('125', '4', '2006-01-02', '1', '500.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('145', '4', '2006-01-02', '1', '500.00') ;
+INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
+VALUES ('235', '4', '2006-01-02', '5', '0.00') ;
 
 
 -- TEHTÄVÄ 3
@@ -662,3 +699,31 @@ ORDER BY Ostohinta DESC;
 | TÄHTI-VIPPE  | Jaana Mikkonen  | 03.03.1997 |   1200.00 |
 | DIKKO        | Jouko Heimala   | 05.12.2000 |   1200.00 |
 | SUSKAN TYTTÖ | Tuija Pakkanen  | 21.12.1995 |    500.00 |
++--------------+-----------------+------------+-----------+
+
+-- TEHTÄVÄ 10
+
+-- poimi taulusta Hevoset hevosen nimi. emän isä ja isän isä jotka ovat Korpilahdella
+
+-- SELECT (VALITAAN)
+-- Sarake1,
+-- Sarake2
+-- Sarake3
+-- FROM taulukko
+-- WHERE Sarake4 = 'Kriteeri';
+
+SELECT
+    Nimi,
+    Emanisa,
+    Isanisa
+FROM Hevoset
+WHERE Omistajan_postitoimipaikka = 'Korpilahti';
++-----------+-----------+--------------+
+| Nimi      | Emanisa   | Isanisa      |
++-----------+-----------+--------------+
+| RULE THE  | ZUMURRUD  | FLASHY       |
+| EXCELLENT | JANET LEE | POPULAR KEMP |
++-----------+-----------+--------------+
+
+-- TEHTÄVÄ 11
+-- Poimi taulusta Kilpailut hevosen rekisterinumero ja kilpailupäivä, joiden voittosumma on yli 300€
