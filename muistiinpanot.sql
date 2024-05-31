@@ -930,7 +930,146 @@ SELECT MIN(Ostohinta) FROM Hevoset;
 |         500.00 |
 ------------------
 
--- Tehtävä 19 AKA 
+-- Tehtävä 19 AKA Tehtävä 20
 --Laske taulussa Raviradat olevien raviratojen lukumäärä
 
-SELECT COUNT(ProductID) AS NumberOfProducts FROM Products; 
+-- Query
+SELECT COUNT(*) FROM raviradat;
+
+-- Tulos
++----------+
+| COUNT(*) |
++----------+
+|        5 |
++----------+
+
+-- Tehtävä 20 AKA Tehtävä 21
+-- Etsi taulusta Hevoset aakkosjärjestyksessä viimeisen hevosen nimi
+
+-- Query
+
+SELECT Nimi
+FROM hevoset
+ORDER BY Nimi DESC
+LIMIT 1;
+
+-- Tulos
++-------------+
+| Nimi        |
++-------------+
+| TÄHTI-VIPPE |
++-------------+
+
+-- Query (vaihtoehtoinen by Minna)
+
+SELECT MAX(Nimi) FROM hevoset;
+
+-- Tulos
++-------------+
+| MAX(Nimi)   |
++-------------+
+| TÄHTI-VIPPE |
++-------------+
+
+-- Tehtävä 21 AKA Tehtävä 22
+-- Poimi taulusta Hevoset omistajan nimi ja osoitetiedot sekä laske 
+-- omistajalle palautettava 10 prosentin hyvitys hevosen ostohinnasta
+
+-- Query
+SELECT
+    Omistajan_nimi,
+    Omistajan_katuosoite,
+    Omistajan_postinumero,
+    Omistajan_postitoimipaikka,
+    Ostohinta * 0.1 AS Palautus
+FROM hevoset;
+
+-- Result
++-----------------+----------------------+-----------------------+----------------------------+----------+
+| Omistajan_nimi  | Omistajan_katuosoite | Omistajan_postinumero | Omistajan_postitoimipaikka | Palautus |
++-----------------+----------------------+-----------------------+----------------------------+----------+
+| Tuija Pakkanen  | Vesitie 4            | 04200                 | Kerava                     |   50.000 |
+| Jaana Mikkonen  | Saimaankatu 12       | 15140                 | Lahti                      |  120.000 |
+| Mark Miettinen  | Mikontie 4           | 15610                 | Korpilahti                 |  130.000 |
+| Jouko Heimala   | Kotikatu 12          | 15610                 | Lahti                      |  120.000 |
+| Pekka Korpinen  | Sammonkatu 8         | 15140                 | Lahti                      |  500.000 |
+| Marjut Nieminen | Ravitie 16           | 14560                 | Korpilahti                 |  230.000 |
++-----------------+----------------------+-----------------------+----------------------------+----------+
+
+-- Tehtävä 22 AKA Tehtävä 23
+-- Tee haku, jossa näkyy hevosesta Nimi, Omistaja ja mihin 
+-- kilpailuun hevonen osallistuu päivämäärä, ja Raviradan Nimi ja osoitetiedot.
+
+-- Queryn selite
+
+-- Query
+SELECT
+    h.Nimi AS Hevosen_Nimi,
+    h.Omistajan_nimi AS Omistaja,
+    k.Hevonen AS Reknro,
+    k.Kilpailupvm AS Kilpailun_Päivämäärä,
+    r.Radan_nimi AS Raviradan_Nimi,
+    r.Katuosoite AS Raviradan_Katuosoite,
+    r.Postinumero AS Raviradan_Postinumero,
+    r.Postitoimipaikka AS Raviradan_Postitoimipaikka
+FROM
+    hevoset h
+JOIN
+    kilpailut k ON h.Reknro = k.Hevonen
+JOIN
+    raviradat r ON k.Ravirata = r.Radan_tunnus;
+
+-- Tulos
++--------------+-----------------+--------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
+| Hevosen_Nimi | Omistaja        | Reknro | Kilpailun_Päivämäärä | Raviradan_Nimi         | Raviradan_Katuosoite | Raviradan_Postinumero | Raviradan_Postitoimipaikka |
++--------------+-----------------+--------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
+| SUSKAN TYTTÖ | Tuija Pakkanen  |     34 | 2005-11-06           | FORSSA, Pilvenmäki     | Pilvenmäki           | 30420                 | Forssa                     |
+| SUSKAN TYTTÖ | Tuija Pakkanen  |     34 | 2005-08-01           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| TÄHTI-VIPPE  | Jaana Mikkonen  |     87 | 2005-08-01           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| DIKKO        | Jouko Heimala   |    145 | 2005-09-12           | KUOPIO, Sorsasalo      | Sorsasalo            | 70420                 | Kuopio                     |
+| SPEEDY TEXAS | Pekka Korpinen  |    165 | 2005-09-12           | KUOPIO, Sorsasalo      | Sorsasalo            | 70420                 | Kuopio                     |
+| EXCELLENT    | Marjut Nieminen |    235 | 2005-08-01           | KUOPIO, Sorsasalo      | Sorsasalo            | 70420                 | Kuopio                     |
+| SUSKAN TYTTÖ | Tuija Pakkanen  |     34 | 2005-10-10           | HELSINKI, Vermo        | Mäkkylä              | 00370                 | Helsinki                   |
+| TÄHTI-VIPPE  | Jaana Mikkonen  |     87 | 2005-10-10           | HELSINKI, Vermo        | Mäkkylä              | 00370                 | Helsinki                   |
+| RULE THE     | Mark Miettinen  |    125 | 2006-01-02           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| DIKKO        | Jouko Heimala   |    145 | 2006-01-02           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| EXCELLENT    | Marjut Nieminen |    235 | 2006-01-02           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
++--------------+-----------------+--------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
+
+-- MUTTA, ohjeissa ei käsketty näyttää Reknro:a haussa, joten korjaamme hieman queryä
+
+SELECT
+    h.Nimi AS Hevosen_Nimi,
+    h.Omistajan_nimi AS Omistaja,
+    k.Kilpailupvm AS Kilpailun_Päivämäärä,
+    r.Radan_nimi AS Raviradan_Nimi,
+    r.Katuosoite AS Raviradan_Katuosoite,
+    r.Postinumero AS Raviradan_Postinumero,
+    r.Postitoimipaikka AS Raviradan_Postitoimipaikka
+FROM
+    hevoset h
+JOIN
+    kilpailut k ON h.Reknro = k.Hevonen
+JOIN
+    raviradat r ON k.Ravirata = r.Radan_tunnus;
+
+-- Jolloin lopullinen tulos on
++--------------+-----------------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
+| Hevosen_Nimi | Omistaja        | Kilpailun_Päivämäärä | Raviradan_Nimi         | Raviradan_Katuosoite | Raviradan_Postinumero | Raviradan_Postitoimipaikka |
++--------------+-----------------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-11-06           | FORSSA, Pilvenmäki     | Pilvenmäki           | 30420                 | Forssa                     |
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-08-01           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | 2005-08-01           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| DIKKO        | Jouko Heimala   | 2005-09-12           | KUOPIO, Sorsasalo      | Sorsasalo            | 70420                 | Kuopio                     |
+| SPEEDY TEXAS | Pekka Korpinen  | 2005-09-12           | KUOPIO, Sorsasalo      | Sorsasalo            | 70420                 | Kuopio                     |
+| EXCELLENT    | Marjut Nieminen | 2005-08-01           | KUOPIO, Sorsasalo      | Sorsasalo            | 70420                 | Kuopio                     |
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-10-10           | HELSINKI, Vermo        | Mäkkylä              | 00370                 | Helsinki                   |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | 2005-10-10           | HELSINKI, Vermo        | Mäkkylä              | 00370                 | Helsinki                   |
+| RULE THE     | Mark Miettinen  | 2006-01-02           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| DIKKO        | Jouko Heimala   | 2006-01-02           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
+| EXCELLENT    | Marjut Nieminen | 2006-01-02           | JYVÄSKYLÄ, Killerjärvi | Killerjärvi          | 40630                 | Jyväskylä                  |
++--------------+-----------------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
+-- El bueno!
+
+
+
