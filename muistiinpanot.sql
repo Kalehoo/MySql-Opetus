@@ -854,3 +854,25 @@ WHERE Omistajan_postitoimipaikka = 'Lahti' OR Ostohinta != 1200;
 
 -- Tehtävä 15
 
+-- Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi niiden 
+-- hevosten osalta joiden rotu on lämmin ja sijoituspaikka joko Lahti tai Korpilahti
+
+-- Query
+SELECT
+    Reknro,
+    Nimi,
+    Omistajan_nimi
+FROM hevoset
+WHERE Rotu = 'Lämmin' AND (Omistajan_postitoimipaikka = 'Lahti' OR Omistajan_postitoimipaikka = 'Korpilahti');
+
+-- Tulos
+
++--------+--------------+-----------------+
+| Reknro | Nimi         | Omistajan_nimi  |
++--------+--------------+-----------------+
+|    125 | RULE THE     | Mark Miettinen  |
+|    165 | SPEEDY TEXAS | Pekka Korpinen  |
+|    235 | EXCELLENT    | Marjut Nieminen |
++--------+--------------+-----------------+
+
+-- Tehtävä 16
