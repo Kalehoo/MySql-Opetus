@@ -547,6 +547,10 @@ CREATE TABLE Kilpailut (
     Voittosumma DECIMAL(50, 2)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
+-- PRIMARY KEYN PUDOTTAMINEN
+ALTER TABLE kilpailut
+DROP PRIMARY KEY;
+
 INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
 VALUES ('34', '2', '2005-11-06', '6', '0.00') ;
 INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
@@ -727,3 +731,126 @@ WHERE Omistajan_postitoimipaikka = 'Korpilahti';
 
 -- TEHTÄVÄ 11
 -- Poimi taulusta Kilpailut hevosen rekisterinumero ja kilpailupäivä, joiden voittosumma on yli 300€
+
+kilpailut
++---------+----------+-------------+-------+-------------+
+| Hevonen | Ravirata | Kilpailupvm | Tulos | Voittosumma |
++---------+----------+-------------+-------+-------------+
+|      34 |        2 | 2005-11-06  |     6 |        0.00 |
+|      34 |        4 | 2005-08-01  |     5 |        0.00 |
+|      87 |        4 | 2005-08-01  |     5 |        0.00 |
+|     145 |        1 | 2005-09-12  |     1 |      300.00 |
+|     165 |        1 | 2005-09-12  |     2 |      150.00 |
+|     235 |        1 | 2005-08-01  |     6 |        0.00 |
+|      34 |        3 | 2005-10-10  |     1 |     1000.00 |
+|      87 |        3 | 2005-10-10  |     4 |        0.00 |
+|     125 |        4 | 2006-01-02  |     1 |      500.00 |
+|     145 |        4 | 2006-01-02  |     1 |      500.00 |
+|     235 |        4 | 2006-01-02  |     5 |        0.00 |
++---------+----------+-------------+-------+-------------+
+
+-- Query
+
+SELECT
+    Hevonen,
+    Kilpailupvm
+FROM kilpailut
+WHERE Voittosumma > 300
+
+-- Tulos
+
++---------+-------------+
+| Hevonen | Kilpailupvm |
++---------+-------------+
+|      34 | 2005-10-10  |
+|     125 | 2006-01-02  |
+|     145 | 2006-01-02  |
++---------+-------------+
+
+-- Tehtävä 12
+
+--Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi niiden hevosten osalta 
+--jotka ovat lahdessa ja joiden hankintahinta on ollut yli 1200 
+
+-- HOX! KORJATAAN AIEMPI VIRHE
+ALTER TABLE hevoset
+CHANGE COLUMN Radan_tunnus Reknro int PRIMARY KEY;
+-- Oli väärä nimi sarakkeella, joten tuolla queryllä korjattiin Radan_tunnus nimeksi Reknro
+
+-- Taulu
++--------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+| Reknro | Nimi         | Rotu   | Emanisa      | Isanisa      | Syntynyt   | Omistajan_nimi  | Omistajan_katuosoite | Omistajan_postinumero | Omistajan_postitoimipaikka | Ostohinta |
++--------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+|     34 | SUSKAN TYTTÖ | Suomen | TOPI-KÖSSI   | SALMER       | 1995-12-21 | Tuija Pakkanen  | Vesitie 4            | 04200                 | Kerava                     |    500.00 |
+|     87 | TÄHTI-VIPPE  | Suomen | VILLE-VILKAS | B. VILUNKI   | 1997-03-03 | Jaana Mikkonen  | Saimaankatu 12       | 15140                 | Lahti                      |   1200.00 |
+|    125 | RULE THE     | Lämmin | ZUMURRUD     | FLASHY       | 2000-05-02 | Mark Miettinen  | Mikontie 4           | 15610                 | Korpilahti                 |   1300.00 |
+|    145 | DIKKO        | Suomen | M.A NIKU     | TURTLE       | 2000-12-05 | Jouko Heimala   | Kotikatu 12          | 15610                 | Lahti                      |   1200.00 |
+|    165 | SPEEDY TEXAS | Lämmin | SORENZA      | DIAMOND      | 1997-03-09 | Pekka Korpinen  | Sammonkatu 8         | 15140                 | Lahti                      |   5000.00 |
+|    235 | EXCELLENT    | Lämmin | JANET LEE    | POPULAR KEMP | 1999-04-16 | Marjut Nieminen | Ravitie 16           | 14560                 | Korpilahti                 |   2300.00 |
++--------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+
+-- Query
+SELECT 
+    Reknro,
+    Nimi,
+    Omistajan_nimi
+FROM hevoset
+WHERE Omistajan_postitoimipaikka = 'Lahti' AND Ostohinta > 1200;
+
+-- Tulos
++--------+--------------+----------------+
+| Reknro | Nimi         | Omistajan_nimi |
++--------+--------------+----------------+
+|    165 | SPEEDY TEXAS | Pekka Korpinen |
++--------+--------------+----------------+
+
+-- Tehtävä 13
+
+-- Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi 
+-- niiden hevosten osalta jotka ovat lahdessa tai joiden ostohinta on 1300 €
+
+-- Query
+SELECT 
+    Reknro,
+    Nimi,
+    Omistajan_nimi
+FROM hevoset
+WHERE Omistajan_postitoimipaikka = 'Lahti' OR Ostohinta = 1300;
+
+-- Tulos
++--------+--------------+----------------+
+| Reknro | Nimi         | Omistajan_nimi |
++--------+--------------+----------------+
+|     87 | TÄHTI-VIPPE  | Jaana Mikkonen |
+|    125 | RULE THE     | Mark Miettinen |
+|    145 | DIKKO        | Jouko Heimala  |
+|    165 | SPEEDY TEXAS | Pekka Korpinen |
++--------+--------------+----------------+
+
+-- Tehtävä 14
+
+-- Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi .
+-- niiden hevosten osalta, jotka ovat lahdessa tai joiden ostohinta ei ole 1200 € 
+
+--Query
+SELECT
+    Reknro,
+    Nimi,
+    Omistajan_nimi
+FROM hevoset
+WHERE Omistajan_postitoimipaikka = 'Lahti' OR Ostohinta != 1200;
+
+--Tulos
++--------+--------------+-----------------+
+| Reknro | Nimi         | Omistajan_nimi  |
++--------+--------------+-----------------+
+|     34 | SUSKAN TYTTÖ | Tuija Pakkanen  |
+|     87 | TÄHTI-VIPPE  | Jaana Mikkonen  |
+|    125 | RULE THE     | Mark Miettinen  |
+|    145 | DIKKO        | Jouko Heimala   |
+|    165 | SPEEDY TEXAS | Pekka Korpinen  |
+|    235 | EXCELLENT    | Marjut Nieminen |
++--------+--------------+-----------------+
+
+-- Tehtävä 15
+
