@@ -530,3 +530,66 @@ END$$
 SELECT TRIGGER_NAME, EVENT_MANIPULATION, EVENT_OBJECT_TABLE, ACTION_STATEMENT, ACTION_TIMING
 FROM information_schema.TRIGGERS
 WHERE EVENT_OBJECT_TABLE = 'hevoset' AND TRIGGER_SCHEMA = 'ravitietokanta';
+
+
+
+
+-- TEHTÄVÄ 3
+-- SUSKAN TYTÖN omistaja muuttaa, päivitä osoitetiedot.
+-- Vesitie 4, postinumero 04200, postitoimipaikka Kerava. Tarkista muutoksen onnistuminen
+
++--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+| Radan_tunnus | Nimi         | Rotu   | Emanisa      | Isanisa      | Syntynyt   | Omistajan_nimi  | Omistajan_katuosoite | Omistajan_postinumero | Omistajan_postitoimipaikka | Ostohinta |
++--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+|           34 | SUSKAN TYTTÖ | Suomen | TOPI-KÖSSI   | SALMER       | 1995-12-21 | Tuija Pakkanen  | Vesitie 4            | 04200                 | Kerava                     |    500.00 |
+|           87 | TÄHTI-VIPPE  | Suomen | VILLE-VILKAS | B. VILUNKI   | 1997-03-03 | Jaana Mikkonen  | Saimaankatu 12       | 15140                 | Lahti                      |   1200.00 |
+|          125 | RULE THE     | Lämmin | ZUMURRUD     | FLASHY       | 2000-05-02 | Mark Miettinen  | Mikontie 4           | 15610                 | Korpilahti                 |   1300.00 |
+|          145 | DIKKO        | Suomen | M.A NIKU     | TURTLE       | 2000-12-05 | Jouko Heimala   | Kotikatu 12          | 15610                 | Lahti                      |   1200.00 |
+|          165 | SPEEDY TEXAS | Lämmin | SORENZA      | DIAMOND      | 1997-03-09 | Pekka Korpinen  | Sammonkatu 8         | 15140                 | Lahti                      |   5000.00 |
+|          235 | EXCELLENT    | Lämmin | JANET LEE    | POPULAR KEMP | 1999-04-16 | Marjut Nieminen | Ravitie 16           | 14560                 | Korpilahti                 |   2300.00 |
++--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+
+-- TEHTÄVÄ 4
+
+-- Tietojen päivityslauseke (joka on sinänsä melko turha koska samat tiedot mitä ennenkin)
+UPDATE Hevoset
+SET Omistajan_katuosoite = 'Vesitie 4', Omistajan_postinumero = '04200', Omistajan_postitoimipaikka = 'Kerava'
+WHERE Radan_tunnus = 34;
+
+--TEHTÄVÄ 5
+-- Valitse kaikki tiedot taulusta
+SELECT * FROM hevoset;
+
+-- Tulos:
++--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+| Radan_tunnus | Nimi         | Rotu   | Emanisa      | Isanisa      | Syntynyt   | Omistajan_nimi  | Omistajan_katuosoite | Omistajan_postinumero | Omistajan_postitoimipaikka | Ostohinta |
++--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+|           34 | SUSKAN TYTTÖ | Suomen | TOPI-KÖSSI   | SALMER       | 1995-12-21 | Tuija Pakkanen  | Vesitie 4            | 04200                 | Kerava                     |    500.00 |
+|           87 | TÄHTI-VIPPE  | Suomen | VILLE-VILKAS | B. VILUNKI   | 1997-03-03 | Jaana Mikkonen  | Saimaankatu 12       | 15140                 | Lahti                      |   1200.00 |
+|          125 | RULE THE     | Lämmin | ZUMURRUD     | FLASHY       | 2000-05-02 | Mark Miettinen  | Mikontie 4           | 15610                 | Korpilahti                 |   1300.00 |
+|          145 | DIKKO        | Suomen | M.A NIKU     | TURTLE       | 2000-12-05 | Jouko Heimala   | Kotikatu 12          | 15610                 | Lahti                      |   1200.00 |
+|          165 | SPEEDY TEXAS | Lämmin | SORENZA      | DIAMOND      | 1997-03-09 | Pekka Korpinen  | Sammonkatu 8         | 15140                 | Lahti                      |   5000.00 |
+|          235 | EXCELLENT    | Lämmin | JANET LEE    | POPULAR KEMP | 1999-04-16 | Marjut Nieminen | Ravitie 16           | 14560                 | Korpilahti                 |   2300.00 |
++--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
+
+--TEHTÄVÄ 6
+-- Valitse tiedot aliaksilla
+
+SELECT
+    Omistajan_nimi AS Omistaja,
+    Omistajan_postitoimipaikka AS Kunta,
+    Nimi
+FROM Hevoset;
+
+-- Tulos
++-----------------+------------+--------------+
+| Omistaja        | Kunta      | Nimi         |
++-----------------+------------+--------------+
+| Tuija Pakkanen  | Kerava     | SUSKAN TYTTÖ |
+| Jaana Mikkonen  | Lahti      | TÄHTI-VIPPE  |
+| Mark Miettinen  | Korpilahti | RULE THE     |
+| Jouko Heimala   | Lahti      | DIKKO        |
+| Pekka Korpinen  | Lahti      | SPEEDY TEXAS |
+| Marjut Nieminen | Korpilahti | EXCELLENT    |
++-----------------+------------+--------------+
+
