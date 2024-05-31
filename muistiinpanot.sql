@@ -706,7 +706,6 @@ ORDER BY Ostohinta DESC;
 +--------------+-----------------+------------+-----------+
 
 -- TEHTÄVÄ 10
-
 -- poimi taulusta Hevoset hevosen nimi. emän isä ja isän isä jotka ovat Korpilahdella
 
 -- SELECT (VALITAAN)
@@ -768,7 +767,6 @@ WHERE Voittosumma > 300
 +---------+-------------+
 
 -- Tehtävä 12
-
 --Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi niiden hevosten osalta 
 --jotka ovat lahdessa ja joiden hankintahinta on ollut yli 1200 
 
@@ -805,7 +803,6 @@ WHERE Omistajan_postitoimipaikka = 'Lahti' AND Ostohinta > 1200;
 +--------+--------------+----------------+
 
 -- Tehtävä 13
-
 -- Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi 
 -- niiden hevosten osalta jotka ovat lahdessa tai joiden ostohinta on 1300 €
 
@@ -828,7 +825,6 @@ WHERE Omistajan_postitoimipaikka = 'Lahti' OR Ostohinta = 1300;
 +--------+--------------+----------------+
 
 -- Tehtävä 14
-
 -- Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi .
 -- niiden hevosten osalta, jotka ovat lahdessa tai joiden ostohinta ei ole 1200 € 
 
@@ -853,7 +849,6 @@ WHERE Omistajan_postitoimipaikka = 'Lahti' OR Ostohinta != 1200;
 +--------+--------------+-----------------+
 
 -- Tehtävä 15
-
 -- Poimi taulusta Hevoset hevosen rekisterinumero ja nimi sekä omistajan nimi niiden 
 -- hevosten osalta joiden rotu on lämmin ja sijoituspaikka joko Lahti tai Korpilahti
 
@@ -876,3 +871,66 @@ WHERE Rotu = 'Lämmin' AND (Omistajan_postitoimipaikka = 'Lahti' OR Omistajan_po
 +--------+--------------+-----------------+
 
 -- Tehtävä 16
+--Poimi taulusta Hevoset omistajan nimi ja osoitetiedot niistä omistajista joiden nimi alkaa j-kirjaimella
+
+-- Query
+SELECT
+    Omistajan_nimi,
+    Omistajan_katuosoite,
+    Omistajan_postitoimipaikka,
+    Omistajan_postinumero
+FROM hevoset 
+WHERE Omistajan_nimi LIKE 'J%';
+
+Äteritsiputeritsi
+
+-- Result
++----------------+----------------------+----------------------------+-----------------------+
+| Omistajan_nimi | Omistajan_katuosoite | Omistajan_postitoimipaikka | Omistajan_postinumero |
++----------------+----------------------+----------------------------+-----------------------+
+| Jaana Mikkonen | Saimaankatu 12       | Lahti                      | 15140                 |
+| Jouko Heimala  | Kotikatu 12          | Lahti                      | 15610                 |
++----------------+----------------------+----------------------------+-----------------------+
+
+-- Tehtävä 17 AKA Tehtävä 18 LOL
+--Poimi taulusta Hevoset hevosen nimi sekä omistajan nimi ja osoitetiedot 
+--niistä hevosista joiden nimessä esiintyy jossain kohtaa t-kirjain
+
+-- Query
+SELECT
+    Nimi,
+    Omistajan_nimi,
+    Omistajan_katuosoite,
+    Omistajan_postitoimipaikka,
+    Omistajan_postinumero
+FROM hevoset 
+WHERE Nimi LIKE '%T%';
+
+-- Tulos
++--------------+-----------------+----------------------+----------------------------+-----------------------+
+| Nimi         | Omistajan_nimi  | Omistajan_katuosoite | Omistajan_postitoimipaikka | Omistajan_postinumero |
++--------------+-----------------+----------------------+----------------------------+-----------------------+
+| SUSKAN TYTTÖ | Tuija Pakkanen  | Vesitie 4            | Kerava                     | 04200                 |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | Saimaankatu 12       | Lahti                      | 15140                 |
+| RULE THE     | Mark Miettinen  | Mikontie 4           | Korpilahti                 | 15610                 |
+| SPEEDY TEXAS | Pekka Korpinen  | Sammonkatu 8         | Lahti                      | 15140                 |
+| EXCELLENT    | Marjut Nieminen | Ravitie 16           | Korpilahti                 | 14560                 |
++--------------+-----------------+----------------------+----------------------------+-----------------------+
+
+-- Tehtävä 18 AKA Tehtävä19 LOL
+-- Etsi taulusta Hevoset pienin ostohinta
+
+-- Query
+SELECT MIN(Ostohinta) FROM Hevoset;
+
+-- Tulos
++----------------+
+| MIN(Ostohinta) |
++----------------+
+|         500.00 |
+------------------
+
+-- Tehtävä 19 AKA 
+--Laske taulussa Raviradat olevien raviratojen lukumäärä
+
+SELECT COUNT(ProductID) AS NumberOfProducts FROM Products; 
