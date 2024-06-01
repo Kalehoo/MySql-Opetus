@@ -1,23 +1,29 @@
-CREATE TABLE kayttajataulu (
-    ID INT(255) AUTO_INCREMENT PRIMARY KEY,
-    NIMI CHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci,
-    RYHMAID CHAR(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
+-- Tehtävä 1
 
-// Lisää tietokantaan kayttajataulu, johon tulee kentät: ID, NIMI, RYHMAID
+-- HUOM! Kaikki SQL-lausekkeet päätetään ;-merkillä. SQL tottelee multiline-komentoja ja sen vuoksi se ei päätä lauseketta ennen ;-merkkiä tiettyjä poikkeuksia lukuunottamatta.
 
+-- Query
+CREATE TABLE kayttajataulu ( -- Luodaan taulukko nimeltä kayttajataulu
+    ID INT(255) AUTO_INCREMENT PRIMARY KEY, -- Primary key, Auto Increment eli ID on ensisijainen avain joka nousee automaattisesti uniikkina indeksinä
+    NIMI CHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci, -- Nimi, datatyypiltään CHAR(255), eli Char joka on max 255-merkkiä pitkä
+    RYHMAID CHAR(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci -- Ryhmäid 3-merkin mittainen char
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci; -- Enkoodaus kotimaiselle kielelle, eli utf8mb4, siinä missä collate on utf8mb4_swedish_ci, joka vuorostaan vaikuttaaa aakkoselliseen indeksointiin.
+
+-- Lisää tietokantaan kayttajataulu, johon tulee kentät: ID, NIMI, RYHMAID
+
+-- Mikäli et laittanut enkoodausta oikein, voit muuttaa sen jälkeenpäin ALTER DATABASE-komennolla
 ALTER DATABASE kayttajatietokanta CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
-// Lisää tietokantaan kayttajaryhmataulu, johon tulee kentät: RYHMAID, RYHMANIMI
+-- Lisää tietokantaan kayttajaryhmataulu, johon tulee kentät: RYHMAID, RYHMANIMI
 
 CREATE TABLE kayttajaryhmataulu(
     RYHMAID CHAR(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci,
     RYHMANIMI CHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
-/* 
-Lisää tietokantaan kayttajaoikeustaulu, johon tulee kentät OIKEUSID, RYHMAID, OHJELMAN_OSA, KÄYTTOOIKEUDEN_NIMI
-*/
+
+--Lisää tietokantaan kayttajaoikeustaulu, johon tulee kentät OIKEUSID, RYHMAID, OHJELMAN_OSA, KÄYTTOOIKEUDEN_NIMI
+
 
 CREATE TABLE kayttajaoikeustaulu(
     OIKEUSID INT(4),
@@ -26,29 +32,27 @@ CREATE TABLE kayttajaoikeustaulu(
     KAYTTOOIKEUDEN_NIMI CHAR(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
-/* 
-Lisää Käyttäjätauluun ID, Oma nimesi (huomioi, 
-ttä luot myöhemmin ryhmaid:n samalla numerolla. Voit tehdä myös päivityksen bonus)
-Lisää vielä kolme muuta käyttäjää ensimmäisiin kahteen ensimmäinen ryhmaid 
-ja kolmanteen toinen ryhmaid ja tiedot samalla tavalla kuin edellä.
-*/
+--Lisää Käyttäjätauluun ID, Oma nimesi (huomioi, 
+--että luot myöhemmin ryhmaid:n samalla numerolla. Voit tehdä myös päivityksen bonus)
+--Lisää vielä kolme muuta käyttäjää ensimmäisiin kahteen ensimmäinen ryhmaid 
+--ja kolmanteen toinen ryhmaid ja tiedot samalla tavalla kuin edellä.
 
+-- Lisääminen tapahtuu INSERT INTO syntaksilla
 INSERT INTO kayttajatietokanta (NIMI) VALUES (Lauri Liukkonen);
 
-// Lisää kaksi kayttajaryhmätauluun ensimmäinen on pääkäyttäjä ja toinen on loppukäyttäjä
+-- Lisää kaksi kayttajaryhmätauluun ensimmäinen on pääkäyttäjä ja toinen on loppukäyttäjä
 
 INSERT INTO kayttajaryhmataulu (RYHMAID, RYHMANIMI)
 VALUES ('001', 'Pääkäyttäjä');
 
-/* 
-Lisää Kayttajaoikeustauluun oikeuksia siten, että pääkäyttäjällä on oikeutena haku, lisäys, muutos, poisto 
-Lisää Kayttajaoikeustauluun oikeuksia siten, että loppukäyttäjällä on oikeutena haku ja muutos.
+-- Lisää Kayttajaoikeustauluun oikeuksia siten, että pääkäyttäjällä on oikeutena haku, lisäys, muutos, poisto 
+-- Lisää Kayttajaoikeustauluun oikeuksia siten, että loppukäyttäjällä on oikeutena haku ja muutos.
 
-*/
+-- Update komenolla voi päivittää/muutella aiemmin lisättyjä tietoja
 UPDATE kayttajatietokanta SET RYHMAID = '001' WHERE NIMI = 'Lauri Liukkonen';
 
-
-kayttajataulu
+-- Tulokset
+--kayttajataulu
 +----+-----------------+---------+
 | ID | NIMI            | RYHMAID |
 +----+-----------------+---------+
@@ -57,14 +61,14 @@ kayttajataulu
 |  3 | Aku Ankka       | 001     |
 |  4 | Pelle Peloton   | 002     |
 +----+-----------------+---------+
-kayttajaryhmataulu
+--kayttajaryhmataulu
 +---------+---------------+
 | RYHMAID | RYHMANIMI     |
 +---------+---------------+
 | 001     | Pääkäyttäjä   |
 | 002     | Loppukäyttäjä |
 +---------+---------------+
-kayttajaoikeustaulu
+--kayttajaoikeustaulu
 +----------+---------+--------------+---------------------+
 | OIKEUSID | RYHMAID | OHJELMAN_OSA | KAYTTOOIKEUDEN_NIMI |
 +----------+---------+--------------+---------------------+
@@ -76,6 +80,7 @@ kayttajaoikeustaulu
 |     2006 | 002     | NULL         | Muutos              |
 +----------+---------+--------------+---------------------+
 
+-- Queryt ristihakuun:
 
 SELECT * FROM kayttajataulu, kayttajaryhmataulu, kayttajaoikeustaulu
 WHERE Kayttajataulu.ID=kayttajaryhmataulu.KAYTTAJAID 
@@ -87,51 +92,47 @@ WHERE kayttajataulu.RYHMAID=kayttajaryhmataulu.RYHMAID
     AND kayttajaryhmataulu.RYHMAID=kayttajaoikeustaulu.RYHMAID
     AND kayttajaoikeustaulu.KAYTTOOIKEUDEN_NIMI = 'Haku';
 
-
+-- Taulukon luonti IF NOT EXISTS turvakomennolla, joka varmistaa ettei taulua luoda jos se on jo valmiiksi olemassa:
 CREATE DATABASE IF NOT EXISTS ravitietokanta
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_swedish_ci;
 
+-- Suunnitellaan taulua:
 Radan_tunnus // 1 // AI int
 Radan_nimi // KUOPIO, Sorsasalo // Katso alta!
 
-DELIMITER $$
+-- Luodaan triggeri, joka laittaa kirjasimet ennen pilkkua kaiken isolla, ja pilkun jälkeen isolla alkukirjaimella.
 
-CREATE TRIGGER before_insert_or_update_radan_nimi
-BEFORE INSERT ON Radan_nimi
-FOR EACH ROW
-BEGIN
-    SET NEW.nimi_string = CONCAT(
-        UPPER(LEFT(NEW.nimi_string, LOCATE(',', NEW.nimi_string) - 1)),
+-- Triggeri on kuin "karhunrauta". Viritettynä se ei tee mitään, mutta jos sen "levy" aktivoidaan, se alkaa toimia.
+-- Samalla tavoin triggeri uinuu järjestelmässä, kunnes sen laukaisuperiaate toteutuu.
+
+DELIMITER $$ -- Luodaan uusi protokola
+
+CREATE TRIGGER before_insert_or_update_radan_nimi -- triggerin nimi
+BEFORE INSERT ON Radan_nimi -- Triggerin ehto, eli ennenkuin Radan_nimi-kenttään insertoidaan jotain.
+FOR EACH ROW -- Määritetään säännöt jokaiselle riville
+BEGIN -- Aloitetaan lauseke
+    SET NEW.nimi_string = CONCAT( -- Luodaan nimelle uusi stringi
+        UPPER(LEFT(NEW.nimi_string, LOCATE(',', NEW.nimi_string) - 1)), -- Separoidaan pilkusta (,) vasemmalle
         ', ',
-        CONCAT(
+        CONCAT( -- Yhdistetään tavarat niin, että pilkun vasen puoli menee kokonaan isolla, ja oikea puoli taas pienellä.
             UPPER(SUBSTRING(NEW.nimi_string, LOCATE(',', NEW.nimi_string) + 2, 1)),
             LOWER(SUBSTRING(NEW.nimi_string, LOCATE(',', NEW.nimi_string) + 3))
         )
     );
-END$$
-
-DELIMITER $$
-CREATE TRIGGER before_insert_or_update_Omistajan_nimi
-BEFORE INSERT ON Hevoset
-FOR EACH ROW
-BEGIN
+END$$ -- lopetetaan lauseke
 
 
 
+-- Raviradat suunnittelua 
 
-
-DELIMITER ;
 Radan_omistaja // Kuopion Ravirata Oy // char(255)
 Katuosoite // Sorsasalo char(255) capitalize
 Postinumero // 70420 // int(5)
 Postitoimipaikka // Kuopio // char(255) capitalize
 Sijainti // Ravirata sijaitsee 5 km:n päässä Kuopion keskustasta
 
-
-
-
-
+-- Lauseke, jossa luodaan taulukko Raviradat
 CREATE TABLE Raviradat (
     Radan_tunnus INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Radan_nimi CHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci COMMENT 'Trigger split, capitalize + collate',
@@ -141,30 +142,21 @@ CREATE TABLE Raviradat (
     Sijainti CHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
+-- Postinumerossa on ongelma, sillä se nielee vain numerosarjoja, jotka menee 1 ylöspäin. 
 
-CREATE TABLE Raviradat (
-    Radan_tunnus INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    Radan_nimi CHAR(255) COMMENT 'Trigger split, capitalize + collate',
-    Radan_omistaja CHAR(255) COMMENT 'Trigger capitalize',
-    Postinumero INT(5),
-    Postitoimipaikka CHAR(255) COMMENT 'Trigger capitalize',
-    Sijainti CHAR(255)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
-
-
+-- Korjataan tämä alteroimalla Postinumero muotoon CHAR(5)
 ALTER TABLE Raviradat
 MODIFY Postinumero CHAR(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
+-- Tai lyhemmin. Sama charset säilyy silti:
 ALTER TABLE Raviradat MODIFY Postinumero CHAR(5);
 
-
+-- Ja lopulta lukitaan se REGEXP (Regular Expression)
 ALTER TABLE Raviradat
 MODIFY Postinumero CHAR(5) COMMENT 'REGEXP 5 NUMERIC',
-ADD CONSTRAINT chk_postinumero_numeric CHECK (Postinumero REGEXP '^[0-9]{5}$');
+ADD CONSTRAINT chk_postinumero_numeric CHECK (Postinumero REGEXP '^[0-9]{5}$'); -- Regexp sääntö eli kelpuutetaan vain numerot 0-9 ja mitta on max 5
 
-
-HEPS, Morjenttes
-
+-- Luodaan paremmin triggeri Raviradan nimelle, jossa muoto on IIII, ppppp / I = iso, p = pieni
 DELIMITER $$
 
 CREATE TRIGGER before_insert_or_update_Radan_nimi
@@ -203,6 +195,7 @@ END$$
 
 DELIMITER ;
 
+-- Radan omistajan triggeri, eli alkaa isolla merkillä
 
 DELIMITER $$
 
@@ -221,6 +214,8 @@ END$$
 
 DELIMITER ;
 
+-- Katuosoite triggeri, eli alkaa isolla merkillä
+
 DELIMITER $$
 CREATE TRIGGER before_insert_or_update_Katuosoite
 BEFORE INSERT ON Raviradat
@@ -233,6 +228,7 @@ BEGIN
     SET NEW.Katuosoite = CONCAT(first_letter, rest_of_name);    
 END$$
 
+-- Radan tiedot:
 +------------------+-----------+------+-----+---------+----------------+
 | Field            | Type      | Null | Key | Default | Extra          |
 +------------------+-----------+------+-----+---------+----------------+
@@ -244,36 +240,11 @@ END$$
 | Postitoimipaikka | char(255) | YES  |     | NULL    |                |
 | Sijainti         | char(255) | YES  |     | NULL    |                |
 +------------------+-----------+------+-----+---------+----------------+
+
+-- Yksi kolumni puuttuu, lisätään se ALTER TABLE ja ADD COLUMN syntakseilla
 ALTER TABLE Raviradat
 ADD COLUMN Katuosoite CHAR(255) AFTER Radan_omistaja;
-
-adan_tunnus Radan_nimi
-Radan_omistaja
-Katuosoite Postinumero Postitoimipaikka Sijainti
-1 KUOPIO, Sorsasalo
-Kuopion Ravirata Oy Sorsasalo
-70420
-Kuopio
-2 FORSSA, Pilvenmäki Forssan Seudun Hippos Pilvenmäki
-30420
-Forssa
-Ravirata sijaitsee 5 km:n päässä Kuopion keskusta...
-Ravirata sijaitsee 2 km:n päässä Forssan keskusta
-3 HELSINKI, Vermo
-Vermon Ravirata Oy Mäkkylä
-00370
-Helsinki
-4 JYVÄSKYLÄ, Killerjärvi Keski-Suomen Ravirata Killerjärvi
-40630
-Jyväskylä
-Ravirata sijaitsee 8 km Helsingin keskustasta
-Ravirata sijaitsee 3 km Jyväskylän keskustasta
-5 OULU, Äimärautio
-Pohjolan Hevosystävät Äimärautio
-90401
-Oulu
-3 km keskustasta etelään vanhan nelostien varrella
-
+-- Lisäyslausekkeet
 
 INSERT INTO Raviradat (Radan_nimi, Radan_omistaja, Katuosoite, Postinumero, Postitoimipaikka, Sijainti) 
 VALUES ('forssa, pilvenmäki', 'Forssan Seudun Hippos', 'pilvenmäki', '30420', 'Forssa', 'Ravirata sijaitsee 2 km:n päässä Forssan keskustasta.');
@@ -283,15 +254,10 @@ INSERT INTO Raviradat (Radan_nimi, Radan_omistaja, Katuosoite, Postinumero, Post
 VALUES ('jyväskylä, killerjärvi', 'Keski-Suomen Ravirata', 'Killerjärvi', '40630', 'jyväskylä', 'Ravirata sijaitsee 3 km:n Jyväskylän keskustasta.');
 INSERT INTO Raviradat (Radan_nimi, Radan_omistaja, Katuosoite, Postinumero, Postitoimipaikka, Sijainti) 
 VALUES ('oulu, äimärautio', 'Pohjolan Hevosystävät', 'äimärautio', '90401', 'oulu', '3km keskustasta etelään vanhan nelostien varrella.');
-INSERT INTO Raviradat (Radan_nimi, Radan_omistaja, Katuosoite, Postinumero, Postitoimipaikka, Sijainti) 
-VALUES (', ', '', '', '', '', '');
-INSERT INTO Raviradat (Radan_nimi, Radan_omistaja, Katuosoite, Postinumero, Postitoimipaikka, Sijainti) 
-VALUES (', ', '', '', '', '', '');
-INSERT INTO Raviradat (Radan_nimi, Radan_omistaja, Katuosoite, Postinumero, Postitoimipaikka, Sijainti) 
-VALUES (', ', '', '', '', '', '');
 
 
-hevoset
+
+-- Hevoset taulun suunnittelu:
 
 Radan_tunnus INT
 Nimi CHAR(255) // capitalize
@@ -304,6 +270,8 @@ Omistajan_katuosoite // CHAR(255) uppercase
 Omistajan_postinumero // CHAR(5) REGEXP
 Omistajan_postitoimipaikka CHAR(255) uppercase
 Ostohinta // DECIMAL(50, 2) 
+
+-- Hevoset taulun julistus
 
 CREATE TABLE Hevoset (
     Radan_tunnus INT NOT NULL PRIMARY KEY,
@@ -320,8 +288,7 @@ CREATE TABLE Hevoset (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
 
-
--- DATANSYÖTTÖLAUSEKKEET
+-- Datansyöttölausekkeet hevoset-taululle
 
 INSERT INTO Hevoset (Radan_tunnus, Nimi, Rotu, Emanisa, Isanisa, Syntynyt, Omistajan_nimi, Omistajan_katuosoite, Omistajan_postinumero, Omistajan_postitoimipaikka, Ostohinta) 
 VALUES ('34', 'suskan tyttö', 'suomen', 'topi-kössi', 'salmer', '1995-12-21', 'tuija pakkanen', 'vesitie 4', '04200', 'kerava', '500.0') ;
@@ -337,7 +304,7 @@ INSERT INTO Hevoset (Radan_tunnus, Nimi, Rotu, Emanisa, Isanisa, Syntynyt, Omist
 VALUES ('235', 'excellent', 'lämmin', 'janet lee', 'popular kemp', '1999-04-16', 'marjut nieminen', 'ravitie 16', '14560', 'korpilahti', '2300.0') ;
 
 
-
+-- Radat-taulun describe
 
 +----------------------------+---------------+------+-----+---------+-------+
 | Field                      | Type          | Null | Key | Default | Extra |
@@ -355,16 +322,17 @@ VALUES ('235', 'excellent', 'lämmin', 'janet lee', 'popular kemp', '1999-04-16'
 | Ostohinta                  | decimal(50,2) | YES  |     | NULL    |       |
 +----------------------------+---------------+------+-----+---------+-------+
 
--- TRIGGEREIDEN TARKISTUS
+-- Tarkistetaan voimassa olevat triggerit
 SELECT TRIGGER_NAME, EVENT_MANIPULATION, EVENT_OBJECT_TABLE, ACTION_STATEMENT, ACTION_TIMING
 FROM information_schema.TRIGGERS
 WHERE EVENT_OBJECT_TABLE = 'Hevoset' AND TRIGGER_SCHEMA = 'Ravitietokanta';
 
--- TRIGGERIN DROPPAUS (POISTO)
+-- Dropataan triggerit nimellä jos on tarve
 DROP TRIGGER triggerin_Nimi;
 
 
--- NIMI KOKO HÖSKÄ UPPERCASE TRIGGER
+-- Hevosen nimi kokonaan isolla triggeri
+
 DELIMITER $$
 
 CREATE TRIGGER before_insert_or_update_Nimi
@@ -376,7 +344,7 @@ END$$
 
 DELIMITER;
 
--- ROTU EKA KIRJAIN ISO TRIGGER
+-- Rodun ensimmäinen kirjain isolla trigger
 
 DELIMITER $$
 CREATE TRIGGER before_insert_or_update_Rotu
@@ -391,7 +359,7 @@ BEGIN
 END$$
 DELIMITER;
 
--- EMANISA KOKO HÖSKÄ UPPERCASE TRIGGER
+-- Emanisa kokonaan isolla triggeri
 DELIMITER $$
 
 CREATE TRIGGER before_insert_or_update_Emanisa
@@ -404,7 +372,7 @@ END$$
 DELIMITER ;
 
 
--- ISANISA KOKO HÖSKÄ UPPERCASE TRIGGER
+-- Isanisa kokonaan isolla triggeri
 DELIMITER $$
 
 CREATE TRIGGER before_insert_or_update_Isanisa
@@ -526,18 +494,20 @@ BEGIN
     SET NEW.Omistajan_nimi = capitalized_name; -- Set the capitalized name for the new row
 END$$
 
--- TARKASTAA KAIKKI TRIGGERIT
+-- Kaikkien triggereiden tarkistus uudelleen
 SELECT TRIGGER_NAME, EVENT_MANIPULATION, EVENT_OBJECT_TABLE, ACTION_STATEMENT, ACTION_TIMING
 FROM information_schema.TRIGGERS
 WHERE EVENT_OBJECT_TABLE = 'hevoset' AND TRIGGER_SCHEMA = 'ravitietokanta';
 
--- KILPAILUT TAULU
+-- Kilpailut taulun suunnittelu
 
 Hevonen INT NOT NULL PRIMARY KEY
 Ravirata INT NOT NULL
 Kilpailupvm DATE,
 Tulos INT,
 Voittosumma DECIMAL(50, 2)
+
+-- Kilpailut taulun julistus
 
 CREATE TABLE Kilpailut (
     Hevonen INT NOT NULL,
@@ -547,9 +517,11 @@ CREATE TABLE Kilpailut (
     Voittosumma DECIMAL(50, 2)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;
 
--- PRIMARY KEYN PUDOTTAMINEN
+-- Primary keyn pudottaminen aiemman virheen korjaamiseksi
 ALTER TABLE kilpailut
 DROP PRIMARY KEY;
+
+-- Datan syölttö Kilpailut-tauluun
 
 INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma) 
 VALUES ('34', '2', '2005-11-06', '6', '0.00') ;
@@ -575,9 +547,20 @@ INSERT INTO Kilpailut (Hevonen, Ravirata, Kilpailupvm, Tulos, Voittosumma)
 VALUES ('235', '4', '2006-01-02', '5', '0.00') ;
 
 
--- TEHTÄVÄ 3
+-- Tehtävä 3
 -- SUSKAN TYTÖN omistaja muuttaa, päivitä osoitetiedot.
 -- Vesitie 4, postinumero 04200, postitoimipaikka Kerava. Tarkista muutoksen onnistuminen
+
+-- HUOM TÄSSÄ KOHTAA MINULLA OLI Reknro väärin, se on korjattu myöhemmässä vaiheessa. Se on taulussa nimellä radan tunnus
+-- Jos haluat korjata sen nyt niin
+ALTER TABLE hevoset
+CHANGE COLUMN Radan_tunnus Reknro int PRIMARY KEY;
+
+-- Query
+
+UPDATE hevoset
+SET Omistajan_katuosoite = value1, Omistajan_postinumero = value2, Omistajan_postitoimipaikka = 'Kerava'
+WHERE Nimi = 'SUSKAN TYTTÖ'; 
 
 +--------------+--------------+--------+--------------+--------------+------------+-----------------+----------------------+-----------------------+----------------------------+-----------+
 | Radan_tunnus | Nimi         | Rotu   | Emanisa      | Isanisa      | Syntynyt   | Omistajan_nimi  | Omistajan_katuosoite | Omistajan_postinumero | Omistajan_postitoimipaikka | Ostohinta |
@@ -1071,5 +1054,86 @@ JOIN
 +--------------+-----------------+----------------------+------------------------+----------------------+-----------------------+----------------------------+
 -- El bueno!
 
+-- Tehtävä 23
+-- Poimi tauluista Hevoset ja Kilpailut hevosen ja omistajan nimi sekä kilpailupäivä
 
+-- Query
 
+SELECT
+    h.Nimi, -- hevoset / Nimi
+    h.Omistajan_nimi, -- hevoset / Omistajan_nimi
+    k.Kilpailupvm -- kilpailut / Kilpailupvm
+FROM hevoset h -- hevoset bindataan h-kirjaimeen
+JOIN kilpailut k ON h.Reknro = k.Hevonen; -- kilpailut bindataan k-kirjaimeen ja ristireferoidaan indeksillä
+
+-- Tulos
++--------------+-----------------+-------------+
+| Nimi         | Omistajan_nimi  | Kilpailupvm |
++--------------+-----------------+-------------+
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-11-06  |
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-08-01  |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | 2005-08-01  |
+| DIKKO        | Jouko Heimala   | 2005-09-12  |
+| SPEEDY TEXAS | Pekka Korpinen  | 2005-09-12  |
+| EXCELLENT    | Marjut Nieminen | 2005-08-01  |
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-10-10  |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | 2005-10-10  |
+| RULE THE     | Mark Miettinen  | 2006-01-02  |
+| DIKKO        | Jouko Heimala   | 2006-01-02  |
+| EXCELLENT    | Marjut Nieminen | 2006-01-02  |
++--------------+-----------------+-------------+
+
+-- Tehtävä 24
+-- Poimi tauluista Hevoset ja Kilpailut hevosen ja omistajan nimi sekä kilpailupäivä raviradalta jonka tunnus on 4
+
+-- Query
+SELECT
+    h.Nimi,
+    h.Omistajan_nimi,
+    k.Kilpailupvm
+FROM hevoset h
+JOIN kilpailut k ON h.Reknro = k.Hevonen
+WHERE k.Ravirata = '4';
+
+-- Tulos
++--------------+-----------------+-------------+
+| Nimi         | Omistajan_nimi  | Kilpailupvm |
++--------------+-----------------+-------------+
+| SUSKAN TYTTÖ | Tuija Pakkanen  | 2005-08-01  |
+| TÄHTI-VIPPE  | Jaana Mikkonen  | 2005-08-01  |
+| RULE THE     | Mark Miettinen  | 2006-01-02  |
+| DIKKO        | Jouko Heimala   | 2006-01-02  |
+| EXCELLENT    | Marjut Nieminen | 2006-01-02  |
++--------------+-----------------+-------------+
+
+-- Tehtävä 25
+-- Poimitaan hevosen rekisterinumero ja nimi, raviradan nimi sekä kilpailupäivä, tulos ja voittosumma,
+
+-- Query
+SELECT
+    h.Reknro,
+    h.Nimi,
+    r.Radan_nimi,
+    k.Kilpailupvm,
+    k.Tulos,
+    k.Voittosumma
+FROM hevoset H
+JOIN kilpailut k ON h.Reknro = k.Hevonen
+JOIN raviradat r ON k.Ravirata = r.Radan_tunnus;
+
+-- Tulos
++--------+--------------+------------------------+-------------+-------+-------------+
+| Reknro | Nimi         | Radan_nimi             | Kilpailupvm | Tulos | Voittosumma |
++--------+--------------+------------------------+-------------+-------+-------------+
+|     34 | SUSKAN TYTTÖ | FORSSA, Pilvenmäki     | 2005-11-06  |     6 |        0.00 |
+|     34 | SUSKAN TYTTÖ | JYVÄSKYLÄ, Killerjärvi | 2005-08-01  |     5 |        0.00 |
+|     87 | TÄHTI-VIPPE  | JYVÄSKYLÄ, Killerjärvi | 2005-08-01  |     5 |        0.00 |
+|    145 | DIKKO        | KUOPIO, Sorsasalo      | 2005-09-12  |     1 |      300.00 |
+|    165 | SPEEDY TEXAS | KUOPIO, Sorsasalo      | 2005-09-12  |     2 |      150.00 |
+|    235 | EXCELLENT    | KUOPIO, Sorsasalo      | 2005-08-01  |     6 |        0.00 |
+|     34 | SUSKAN TYTTÖ | HELSINKI, Vermo        | 2005-10-10  |     1 |     1000.00 |
+|     87 | TÄHTI-VIPPE  | HELSINKI, Vermo        | 2005-10-10  |     4 |        0.00 |
+|    125 | RULE THE     | JYVÄSKYLÄ, Killerjärvi | 2006-01-02  |     1 |      500.00 |
+|    145 | DIKKO        | JYVÄSKYLÄ, Killerjärvi | 2006-01-02  |     1 |      500.00 |
+|    235 | EXCELLENT    | JYVÄSKYLÄ, Killerjärvi | 2006-01-02  |     5 |        0.00 |
++--------+--------------+------------------------+-------------+-------+-------------+
